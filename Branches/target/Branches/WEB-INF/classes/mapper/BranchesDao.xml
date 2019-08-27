@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cssl.branches.dao.BranchesDao">
+    <select id="findAll" resultType="com.cssl.branches.entity.Branches">
+      SELECT * FROM branches  b ,cityarea  c WHERE b.cityAreaId =c.cid
+    </select>
+
+
+    <select id="findById"  resultType="com.cssl.branches.entity.Branches" parameterType="int">
+      SELECT * FROM branches  b ,cityarea  c WHERE b.cityAreaId=c.cid and id= #{id}
+    </select>
+
+
+    <select id="findByMoHu"  resultType="com.cssl.branches.entity.Branches" parameterType="String">
+        SELECT * FROM branches  b ,cityarea  c WHERE b.cityAreaId=c.cid
+        and name LIKE CONCAT(CONCAT('%',#{name}),'%')
+    </select>
+
+
+    
+    <insert id="addBranches" parameterType="com.cssl.branches.entity.Branches">
+
+      INSERT INTO `bdqntest`.`branches` (`id`, `name`, `cityAreaId`, `address`, `telephone`)VALUES(#{id},#{name},#{cityAreaId},#{address},#{telephone});
+  </insert>
+
+    <delete id="deleteBranches">
+        delete from branches where id = #{id}
+    </delete>
+
+    <update id="updateBranches" parameterType="com.cssl.branches.entity.Branches">
+      UPDATE branches
+	  SET
+	  `name` = #{name} ,
+	  `cityAreaId` = #{cityAreaId} ,
+	  `address` = #{address} ,
+	  `telephone` = #{telephone}
+	  WHERE
+	  `id` = #{id} ;
+    </update>
+</mapper>

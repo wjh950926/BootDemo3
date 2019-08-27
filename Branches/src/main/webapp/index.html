@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>页面显示内容</title>
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.post("findAll",function(data){
+                for(var i=0;i<data.length;i++){
+                    var tr="<tr align=\"center\"><td>"
+                        +data[i].id+"</td><td>"+data[i].name
+                        +"</td><td>"+data[i].cname
+                        +"</td><td>"+data[i].address
+                        +"</td><td>"+data[i].telephone
+                        +"</td><td>" +
+                        "<a href='delById?bid="+data[i].id+"'>删除</a>  <a href='update.html?bid="+data[i].id+"'>修改</a> </td></tr>";
+                    $("#tb").append(tr);
+                    loadColor();
+                }
+
+            },"json");
+            $("#mohu").click(function () {
+
+                var val=$("#mohuval").val();
+                //alert("xx:"+val);
+                $.post("mohuName",{"name":val},function (data) {
+                    $("tr:not(:first)").remove();
+                    for(var i=0;i<data.length;i++){
+                    var tr="<tr align=\"center\"><td>"
+                        +data[i].id+"</td><td>"+data[i].name
+                        +"</td><td>"+data[i].cname
+                        +"</td><td>"+data[i].address
+                        +"</td><td>"+data[i].telephone
+                        +"</td><td>" +
+                        "<a href='delById?bid="+data[i].id+"'>删除</a>  <a href='update.html?bid="+data[i].id+"'>修改</a> </td></tr>";
+                    $("#tb").append(tr);
+                    loadColor();}
+                },"json");
+            })
+
+        })
+
+        function loadColor() {
+            $("tr:odd").css("background-color","pink");
+        }
+        
+    </script>
+
+</head>
+<body>
+<center>
+    <h1>页面显示</h1>
+  
+        姓名的模糊:<input id="mohuval" type="text" name="name">
+        <input id="mohu" type="submit" value="查询">
+    
+    <table id="tb" border="1" width="800px">
+        <tr align="center">
+            <td>ID</td>
+            <td>姓名</td>
+            <td>市区ID</td>
+            <td>地址</td>
+            <td>电话</td>
+            <td>操作</td>
+        </tr>
+
+
+
+    </table>
+</center>
+</body>
+</html>

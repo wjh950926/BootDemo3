@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <script type="text/javascript">
+
+    //返回?后的json对象
+    function getRequest() {
+        //获取url中"?"符后的字串
+        var url = location.search;
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+
+    //查班级
+    $.post("allCname",function (data) {
+        for(var i=0;i<data.length;i++){
+            var option="<option  value="+data[i].cid+">"+data[i].cname+"</option>";
+            $("#diqu").append(option);
+        }
+    },"json");
+    $(function () {
+      var u= getRequest();
+      $.post("findById",u,function (data) {
+            $("#bid").val(data.id);
+            $("#bname").val(data.name);
+            $("#addre").val(data.address);
+            $("#tel").val(data.telephone);
+            $('#diqu>option[value='+data.cityAreaId+']').prop('selected',true);
+      }),"json"
+    });
+
+    </script>
+</head>
+<body>
+<h1>修改页面</h1>
+
+<form action="updateBranches" method="post">
+    <input name="id" type="hidden" id="bid" >
+    姓名：<input type="text" name="name" id="bname"><br/>
+    地区：<select name="cityAreaId" id="diqu">
+            <option value="">-请选择-</option>
+
+
+        </select>
+    <br/>
+    地址：<input type="text" name="address" id="addre"><br/>
+    电话：<input type="text" name="telephone" id="tel"><br/>
+    操作：<input type="submit" value="修改">
+            <input type="reset">
+
+</form>
+
+</body>
+</html>
